@@ -10,9 +10,9 @@ return function(shopList, togglesTable, selectedItemsTable)
     gui.IgnoreGuiInset = true
     gui.Parent = pg
 
-    -- Main frame (draggable, modernized)
+    -- Main frame (draggable, modernized, taller)
     local frame = Instance.new("Frame")
-    frame.Size = UDim2.new(0, 400, 0, 270)
+    frame.Size = UDim2.new(0, 400, 0, 380)
     frame.Position = UDim2.new(0, 80, 0.35, 0)
     frame.BackgroundColor3 = Color3.fromRGB(36, 36, 44)
     frame.BorderSizePixel = 0
@@ -46,7 +46,7 @@ return function(shopList, togglesTable, selectedItemsTable)
     title.ZIndex = 2
     title.Parent = frame
 
-    -- Close button (modern)
+    -- Close button
     local close = Instance.new("TextButton")
     close.Size = UDim2.new(0, 36, 0, 36)
     close.Position = UDim2.new(1, -42, 0, 4)
@@ -63,8 +63,6 @@ return function(shopList, togglesTable, selectedItemsTable)
     close.MouseButton1Click:Connect(function()
         gui:Destroy()
     end)
-
-    -- Modern hover effect for close
     close.MouseEnter:Connect(function() close.BackgroundColor3 = Color3.fromRGB(200,60,60) end)
     close.MouseLeave:Connect(function() close.BackgroundColor3 = Color3.fromRGB(50,55,60) end)
 
@@ -84,13 +82,11 @@ return function(shopList, togglesTable, selectedItemsTable)
         toggleBtn.Parent = frame
         local toggleCorner = Instance.new("UICorner", toggleBtn)
         toggleCorner.CornerRadius = UDim.new(0, 8)
-
         toggleBtn.MouseButton1Click:Connect(function()
             togglesTable[category] = not togglesTable[category]
             toggleBtn.Text = togglesTable[category] and "● ON" or "○ OFF"
             toggleBtn.BackgroundColor3 = togglesTable[category] and Color3.fromRGB(58,196,112) or Color3.fromRGB(46, 46, 56)
         end)
-
         toggleBtn.MouseEnter:Connect(function()
             if togglesTable[category] then
                 toggleBtn.BackgroundColor3 = Color3.fromRGB(38,216,132)
@@ -140,8 +136,6 @@ return function(shopList, togglesTable, selectedItemsTable)
         dropFrame.Parent = frame
         local dropCorner = Instance.new("UICorner", dropFrame)
         dropCorner.CornerRadius = UDim.new(0, 10)
-
-        -- Border
         local dropBorder = Instance.new("Frame", dropFrame)
         dropBorder.BackgroundColor3 = Color3.fromRGB(60, 60, 90)
         dropBorder.Size = UDim2.new(1, 0, 0, 2)
@@ -222,8 +216,8 @@ return function(shopList, togglesTable, selectedItemsTable)
             dropFrame.Visible = not dropFrame.Visible
         end)
 
-        -- Hide dropdown if click outside
-        gui.InputBegan:Connect(function(input)
+        -- Hide dropdown if click outside (fix: use UIS.InputBegan, not gui.InputBegan)
+        UIS.InputBegan:Connect(function(input)
             if dropFrame.Visible and input.UserInputType == Enum.UserInputType.MouseButton1 then
                 local mouse = UIS:GetMouseLocation()
                 local fPos = frame.AbsolutePosition
@@ -242,7 +236,7 @@ return function(shopList, togglesTable, selectedItemsTable)
         end)
     end
 
-    -- Seeds at y=60, Gears at y=140
+    -- Seeds at y=60, Gears at y=200
     makeDropdown("Seeds", 60)
-    makeDropdown("Gears", 140)
+    makeDropdown("Gears", 200)
 end
