@@ -19,7 +19,7 @@ function M.buyItems(remote, items)
             ok, err = pcall(function() remote:InvokeServer(itemName) end)
         end
         if not ok then warn("Failed to buy", itemName, ":", err) end
-        task.wait(0.05)
+        task.wait()
     end
 end
 
@@ -28,7 +28,7 @@ function M.startAutoLoop(ShopRemotes, ShopList, togglesTable, selectedItemsTable
         task.spawn(function()
             while true do
                 while not togglesTable[category] do
-                    task.wait(0.2)
+                    task.wait()
                 end
                 local remote = ShopRemotes[category]
                 local buyList = {}
@@ -40,7 +40,7 @@ function M.startAutoLoop(ShopRemotes, ShopList, togglesTable, selectedItemsTable
                 if #buyList > 0 then
                     M.buyItems(remote, buyList)
                 end
-                task.wait(1) -- repeat every second, adjust as needed
+                task.wait() -- repeat every second, adjust as needed
             end
         end)
     end
